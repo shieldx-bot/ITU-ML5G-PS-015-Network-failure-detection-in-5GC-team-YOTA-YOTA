@@ -39,6 +39,8 @@ def main():
 
     fin_xgboost = svm.SVC()
 
+    print("Length X_train:", len(X_train));
+    print("Length X_test:", len(X_test));
 
     # モデル訓練
     fin_xgboost.fit(X_train, y_train)

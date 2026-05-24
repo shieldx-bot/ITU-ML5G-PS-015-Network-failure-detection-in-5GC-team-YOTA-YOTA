@@ -39,6 +39,8 @@ def main():
 #     y_test = np.concatenate([y_test_a, y_test_c])
 
 
+    print("Length X_train:", len(X_train));
+    print("Length X_test:", len(X_test));
 
     fin_xgboost = RandomForestRegressor(max_depth=2, random_state=0)
 

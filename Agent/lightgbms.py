@@ -42,6 +42,8 @@ def main():
 
     fin_xgboost = lgb.LGBMClassifier(n_estimators=100, learning_rate=0.05)
 
+    print(f"Training samples: {len(y_train)}")
+    print(f"Test samples: {len(y_test)}")
 
     # モデル訓練
     fin_xgboost.fit(X_train, y_train)

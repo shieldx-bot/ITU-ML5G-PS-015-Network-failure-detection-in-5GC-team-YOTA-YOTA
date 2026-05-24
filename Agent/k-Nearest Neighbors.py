@@ -43,6 +43,8 @@ def main():
 
     fin_xgboost = KNeighborsClassifier(n_neighbors=3)
 
+    print(f"Training samples: {len(y_train)}")
+    print(f"Test samples: {len(y_test)}")
 
     # モデル訓練
     fin_xgboost.fit(X_train, y_train)

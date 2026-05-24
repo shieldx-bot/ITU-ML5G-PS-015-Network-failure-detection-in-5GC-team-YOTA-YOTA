@@ -41,9 +41,9 @@ def main():
 
     X_train = np.concatenate([X_train_a, X_train_c])
     y_train = np.concatenate([y_train_a, y_train_c])
-    print(f"Training samples: {len(y_train)}")
-    print(f"Test samples: {len(y_test)}")
 
+    print("Length X_train:", len(X_train));
+    print("Length X_test:", len(X_test));
 
     # Use numpy arrays with scikit-learn (no torch required)
     X_train_used = X_train.astype(np.float32)
@@ -60,7 +60,6 @@ def main():
 
     print(accuracy_score(y_test_used, pred_y))
     print(classification_report(y_test_used, pred_y))
-
     print(confusion_matrix(y_test_used,  pred_y))
 
 if __name__ == "__main__":

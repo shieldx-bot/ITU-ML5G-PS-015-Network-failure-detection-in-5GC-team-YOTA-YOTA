@@ -36,6 +36,8 @@ def main():
 #     X_test = np.concatenate([X_test_a, X_test_c])
 #     y_test = np.concatenate([y_test_a, y_test_c])
 
+    print(f"Training samples: {len(y_train)}")
+    print(f"Test samples: {len(y_test)}")
 
     fin_xgboost = LogisticRegression(random_state=0, max_iter=1000)
 
