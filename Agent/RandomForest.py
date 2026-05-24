@@ -1,4 +1,4 @@
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 import os
 import numpy as np
 from sklearn.naive_bayes import GaussianNB
@@ -7,8 +7,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 
-
-
+ 
 
 
 def main():
