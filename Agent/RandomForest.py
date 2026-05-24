@@ -41,7 +41,7 @@ def main():
     print("Length X_train:", len(X_train));
     print("Length X_test:", len(X_test));
 
-    fin_xgboost = RandomForestRegressor(    
+    fin_xgboost = RandomForestClassifier(    
         n_estimators=200,
         max_depth=None,
         class_weight='balanced',
