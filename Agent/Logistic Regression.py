@@ -39,7 +39,7 @@ def main():
     print(f"Training samples: {len(y_train)}")
     print(f"Test samples: {len(y_test)}")
 
-    fin_xgboost = LogisticRegression(random_state=0, max_iter=3000, class_weight='balanced')
+    fin_xgboost = LogisticRegression(random_state=0, max_iter=100000, class_weight='balanced')
 
 
     # モデル訓練
