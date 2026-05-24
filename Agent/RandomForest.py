@@ -63,7 +63,7 @@ def main():
     start_pred = time.time()
     fin_test_pred = fin_xgboost.predict(X_test)
     end_pred = time.time(); 
-    predict_time = start_pred - end_pred
+    predict_time = end_pred - start_pred
 
     print("predict_time:", predict_time)
 
@@ -80,7 +80,7 @@ def main():
 
     cm = confusion_matrix(y_test, fin_test_pred)
 
-    with open("result.txt", "w") as f:
+    with open("RandomForest.txt", "w") as f:
         f.write(f"Accuracy: {acc:.4f}\n\n")
 
         f.write("Classification Report:\n")
