@@ -42,7 +42,12 @@ def main():
     print("Length X_train:", len(X_train));
     print("Length X_test:", len(X_test));
 
-    fin_xgboost = RandomForestRegressor(max_depth=2, random_state=0)
+    fin_xgboost = RandomForestRegressor(    
+        n_estimators=200,
+        max_depth=None,
+        class_weight='balanced',
+        random_state=0,
+        n_jobs=-1)
 
 
     # モデル訓練
