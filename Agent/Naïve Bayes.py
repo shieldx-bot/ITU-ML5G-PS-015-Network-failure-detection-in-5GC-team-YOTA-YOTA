@@ -1,8 +1,6 @@
 import os
 import numpy as np
 
- import os
-import numpy as np
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
