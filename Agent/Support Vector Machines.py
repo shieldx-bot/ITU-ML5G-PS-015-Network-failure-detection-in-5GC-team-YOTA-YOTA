@@ -6,7 +6,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
-
+import time 
 
 
 def main():
@@ -43,10 +43,16 @@ def main():
     print("Length X_test:", len(X_test));
 
     # モデル訓練
+    start_train = time.time();
     fin_xgboost.fit(X_train, y_train)
+    time_train = time.time() - start_train; 
 
     # テストデータで推測値を算出
+
+    start_pred = time.time(); 
     fin_test_pred = fin_xgboost.predict(X_test)
+    time_pred = time.time() - start_pred; 
+
 
     # 混同行列で確認
     confusion_matrix(y_test, fin_test_pred, labels=[1, 0])
@@ -55,6 +61,25 @@ def main():
     print(classification_report(y_test, fin_test_pred))
 
     print(confusion_matrix(y_test,  fin_test_pred))
+    acc = accuracy_score(y_test, fin_test_pred)
+
+    report = classification_report(y_test, fin_test_pred)
+
+    cm = confusion_matrix(y_test, fin_test_pred)
+
+    with open("Support Vector Machines.txt", "w") as f:
+        f.write(f"Accuracy: {acc:.4f}\n\n")
+
+        f.write("Classification Report:\n")
+        f.write(report)
+        f.write("\n")
+
+        f.write("Confusion Matrix:\n")
+        f.write(str(cm))
+        f.write("\n\n")
+
+        f.write(f"Training time: {time_train:.2f} seconds\n")
+        f.write(f"Prediction time: {time_pred:.2f} seconds\n")
 
 
 if __name__ == '__main__':

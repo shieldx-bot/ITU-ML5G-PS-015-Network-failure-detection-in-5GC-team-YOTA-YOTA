@@ -1,18 +1,15 @@
 import json
-import pandas as pd
 from pathlib import Path
 import os
 import torch
 import torch.nn as nn
 from torch.utils.data import TensorDataset, DataLoader
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
-
-
+import time 
 
 
 print(f"CUDA available: {torch.cuda.is_available()}")
@@ -102,6 +99,7 @@ def main():
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
     num_epochs = 100
 
+    start_train = time.time()
     # ===== HUẤN LUYỆN VỚI TOÀN BỘ DỮ LIỆU =====
     current_loss = 0
     for epoch in range(num_epochs):
@@ -118,7 +116,9 @@ def main():
 
             optimizer.step()
         print(f"At epoch: {epoch}, loss: {current_loss}")
+    
 
+    train_time = time.time() - start_train
     # ===== DỰ ĐOÁN TRÊN TEST =====
     model.eval()
     X_test_tensor = torch.tensor(X_test, dtype=torch.float32).unsqueeze(-1)
@@ -141,12 +141,32 @@ def main():
     predicted_logits = np.concatenate(all_predictions)
     y_test_np = np.concatenate(all_targets).flatten().astype(np.int64)
 
+    start_pred = time.time()
     predicted_classes = np.argmax(predicted_logits, axis=1)
+    predict_time = time.time() - start_pred 
+    print(accuracy_score(y_test_np, predicted_classes))
+    print(classification_report(y_test_np, predicted_classes))
+    print(confusion_matrix(y_test_np,  predicted_classes))
+    acc = accuracy_score(y_test_np, predicted_classes)
 
-      print(accuracy_score(y_test_np, predicted_classes))
-      print(classification_report(y_test_np, predicted_classes))
+    report = classification_report(y_test_np, predicted_classes)
 
-      print(confusion_matrix(y_test_np,  predicted_classes))
+    cm = confusion_matrix(y_test_np, predicted_classes)
+
+    with open("Logistic Regression.txt", "w") as f:
+        f.write(f"Accuracy: {acc:.4f}\n\n")
+
+        f.write("Classification Report:\n")
+        f.write(report)
+        f.write("\n")
+
+        f.write("Confusion Matrix:\n")
+        f.write(str(cm))
+        f.write("\n\n")
+
+        f.write(f"Training time: {train_time:.2f} seconds\n")
+        f.write(f"Prediction time: {predict_time:.2f} seconds\n")
+
     # =============================
 
 if __name__ == '__main__':

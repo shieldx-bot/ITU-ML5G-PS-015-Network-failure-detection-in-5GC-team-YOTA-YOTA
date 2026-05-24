@@ -6,13 +6,11 @@ import torch
 import torch.nn as nn
 from torch.utils.data import TensorDataset, DataLoader
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
-
-
+import time
 
 print(f"CUDA available: {torch.cuda.is_available()}")
 print(f"Number of GPUs: {torch.cuda.device_count()}")
@@ -73,8 +71,9 @@ def main():
 
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
-    num_epochs = 1000
+    num_epochs = 100
 
+    start_train = time.time()
     # ===== HUẤN LUYỆN VỚI TOÀN BỘ DỮ LIỆU =====
     for epoch in range(num_epochs):
         model.train()
@@ -101,6 +100,8 @@ def main():
     # ===========================================
 
     # ===== DỰ ĐOÁN TRÊN TEST =====
+    train_time = time.time() - start_train
+
     model.eval()
     X_test_tensor = torch.tensor(X_test, dtype=torch.float32).unsqueeze(-1)
     y_test_tensor = torch.tensor(y_test, dtype=torch.float32).view(-1, 1)
@@ -119,16 +120,34 @@ def main():
             all_predictions.append(pred.cpu().numpy())
             all_targets.append(batch_y.cpu().numpy())
 
+    start_test = time.time()
     predicted_np = np.concatenate(all_predictions).flatten()
+    predict_time = time.time() - start_test 
     y_test_np = np.concatenate(all_targets).flatten()
 
     mae = np.mean(np.abs(predicted_np - y_test_np))
     print(f"\nMAE: {mae:.4f}")
 
-    print(accuracy_score(y_test_np, predicted_np))
-    print(classification_report(y_test_np, predicted_np))
+    acc = accuracy_score(y_test_np, predicted_np)
 
-    print(confusion_matrix(y_test_np,  predicted_np))
+    report = classification_report(y_test_np, predicted_np)
+
+    cm = confusion_matrix(y_test_np, predicted_np)
+
+    with open("LSTM.txt", "w") as f:
+        f.write(f"Accuracy: {acc:.4f}\n\n")
+
+        f.write("Classification Report:\n")
+        f.write(report)
+        f.write("\n")
+
+        f.write("Confusion Matrix:\n")
+        f.write(str(cm))
+        f.write("\n\n")
+
+        f.write(f"Training time: {train_time:.2f} seconds\n")
+        f.write(f"Prediction time: {predict_time:.2f} seconds\n")
+
 
     # =============================
 

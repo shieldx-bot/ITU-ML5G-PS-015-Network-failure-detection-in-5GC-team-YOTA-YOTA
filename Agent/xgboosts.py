@@ -5,7 +5,7 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
-
+import time
 
 
 
@@ -50,10 +50,23 @@ def main():
     y_train_used = y_train.ravel()  # ensure 1-D labels
     X_test_used = X_test.astype(np.float32)
     y_test_used = y_test.ravel()
-    bst = XGBClassifier(n_estimators=2, max_depth=2, learning_rate=1, objective='binary:logistic')
+    bst = XGBClassifier(
+    n_estimators=200,
+    max_depth=6,
+    learning_rate=0.1,
+    objective='multi:softmax',
+    num_class=6,
+    random_state=0,
+    n_jobs=-1
+     )
 
-    bst.fit(X_train_used[], y_train_used[])
+    time_start = time.time()
+    bst.fit(X_train_used[:1000], y_train_used[:1000])
+    time_train = time.time() - time_start
+
+    start_pred = time.time()
     pred_y = bst.predict(X_test_used)
+    time_pred = time.time() - start_pred 
     print("pred_y =v", pred_y )
     mae = np.mean(np.abs(pred_y - y_test_used))
     print("mae = ", mae)
@@ -61,6 +74,25 @@ def main():
     print(accuracy_score(y_test_used, pred_y))
     print(classification_report(y_test_used, pred_y))
     print(confusion_matrix(y_test_used,  pred_y))
+    acc = accuracy_score(y_test_used, pred_y)
+
+    report = classification_report(y_test_used, pred_y)
+
+    cm = confusion_matrix(y_test_used, pred_y)
+
+    with open("xgboosts.txt", "w") as f:
+        f.write(f"Accuracy: {acc:.4f}\n\n")
+
+        f.write("Classification Report:\n")
+        f.write(report)
+        f.write("\n")
+
+        f.write("Confusion Matrix:\n")
+        f.write(str(cm))
+        f.write("\n\n")
+
+        f.write(f"Training time: {time_train:.2f} seconds\n")
+        f.write(f"Prediction time: {time_pred:.2f} seconds\n")
 
 if __name__ == "__main__":
     main()
