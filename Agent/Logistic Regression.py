@@ -39,11 +39,8 @@ def main():
     print(f"Training samples: {len(y_train)}")
     print(f"Test samples: {len(y_test)}")
 
-    fin_xgboost =  LogisticRegression(
-        random_state=0,
-        max_iter=1000,
-        class_weight='balanced'
-    )
+    fin_xgboost = LogisticRegression(random_state=0, max_iter=3000, class_weight='balanced')
+
 
     # モデル訓練
     fin_xgboost.fit(X_train, y_train)
@@ -62,25 +59,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-# 0.9482020547945206
-#               precision    recall  f1-score   support
-
-#            0       0.95      1.00      0.97     21900
-#            1       0.37      0.08      0.13       308
-#            2       0.10      0.01      0.01       287
-#            3       0.34      0.09      0.14       280
-#            4       0.00      0.00      0.00       291
-#            5       0.92      0.99      0.95       294
-
-#     accuracy                           0.95     23360
-#    macro avg       0.45      0.36      0.37     23360
-# weighted avg       0.92      0.95      0.93     23360
-
-# [[21808    17    16    34     9    16]
-#  [  280    25     0     3     0     0]
-#  [  263    11     2    11     0     0]
-#  [  225    15     3    25     2    10]
-#  [  291     0     0     0     0     0]
-#  [    4     0     0     0     0   290]]
