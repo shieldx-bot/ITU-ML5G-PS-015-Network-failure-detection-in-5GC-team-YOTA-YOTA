@@ -52,11 +52,16 @@ def main():
     y_test_used = y_test.ravel()
     bst = XGBClassifier(n_estimators=2, max_depth=2, learning_rate=1, objective='binary:logistic')
 
-    bst.fit(X_train_used[:10000], y_train_used[:10000])
-    pred_y = bst.predict(X_test_used[:10])
+    bst.fit(X_train_used[], y_train_used[])
+    pred_y = bst.predict(X_test_used)
     print("pred_y =v", pred_y )
-    mae = np.mean(np.abs(pred_y - y_test_used[:10]))
+    mae = np.mean(np.abs(pred_y - y_test_used))
     print("mae = ", mae)
+
+    print(accuracy_score(y_test_used, pred_y))
+    print(classification_report(y_test_used, pred_y))
+
+    print(confusion_matrix(y_test_used,  pred_y))
 
 if __name__ == "__main__":
     main()

@@ -37,9 +37,6 @@ def main():
 #     y_test = np.concatenate([y_test_a, y_test_c])
 
 
-    dtrain = xgb.DMatrix(X_train, label=y_train)
-    dtest = xgb.DMatrix(X_test, label=y_test)
-
     fin_xgboost = LogisticRegression(random_state=0, max_iter=1000)
 
 

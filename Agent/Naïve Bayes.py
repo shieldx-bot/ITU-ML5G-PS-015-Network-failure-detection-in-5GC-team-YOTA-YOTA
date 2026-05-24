@@ -1,18 +1,7 @@
 import os
 import numpy as np
-from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import classification_report
 
-
-
-
-
-
-from sklearn import svm
-import os
+ import os
 import numpy as np
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report
@@ -50,8 +39,6 @@ def main():
 #     y_test = np.concatenate([y_test_a, y_test_c])
 
 
-    dtrain = xgb.DMatrix(X_train, label=y_train)
-    dtest = xgb.DMatrix(X_test, label=y_test)
 
     fin_xgboost = GaussianNB()
 
