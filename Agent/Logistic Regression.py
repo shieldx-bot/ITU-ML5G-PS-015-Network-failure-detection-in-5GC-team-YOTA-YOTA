@@ -1,11 +1,16 @@
 import os
 import numpy as np
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
 
 
 
 
-def main(): 
+
+def main():
     # ===== LOAD TOÀN BỘ DỮ LIỆU =====
     print("Loading data...")
 
@@ -33,7 +38,7 @@ def main():
 
     X_test = np.loadtxt(find_file('01_a_test_data.txt'))
     y_test = np.loadtxt(find_file('01_a_test_label.txt'), dtype='int64')
-    
+
     X_train = np.concatenate([X_train_a, X_train_c])
     y_train = np.concatenate([y_train_a, y_train_c])
     print(f"Training samples: {len(y_train)}")

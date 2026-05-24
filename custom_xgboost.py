@@ -18,47 +18,47 @@ import numpy as np
 
 def main():
 #     ####データの合成なし
-#     X_train = np.loadtxt('/data/ap_data/01_c_train_data.txt')
-#     y_train = np.loadtxt('/data/ap_data/01_c_train_label.txt', dtype='int64')
-    
-    X_test = np.loadtxt('/data/ap_data/01_a_test_data.txt')
-    y_test = np.loadtxt('/data/ap_data/01_a_test_label.txt', dtype='int64')
+#     X_train = np.loadtxt('/ap_data/01_c_train_data.txt')
+#     y_train = np.loadtxt('/ap_data/01_c_train_label.txt', dtype='int64')
+
+    X_test = np.loadtxt('/ap_data/01_a_test_data.txt')
+    y_test = np.loadtxt('/ap_data/01_a_test_label.txt', dtype='int64')
 
     #データの合成あり
-    X_train_a = np.loadtxt('/data/ap_data/01_a_train_data.txt')
-    y_train_a = np.loadtxt('/data/ap_data/01_a_train_label.txt', dtype='int64')
-    
-    X_test_a = np.loadtxt('/data/ap_data/01_a_test_data.txt')
-    y_test_a = np.loadtxt('/data/ap_data/01_a_test_label.txt', dtype='int64')
-    
-    X_train_c = np.loadtxt('/data/ap_data/01_c_train_data.txt')
-    y_train_c = np.loadtxt('/data/ap_data/01_c_train_label.txt', dtype='int64')
-    
-    X_test_c = np.loadtxt('/data/ap_data/01_c_test_data.txt')
-    y_test_c = np.loadtxt('/data/ap_data/01_c_test_label.txt', dtype='int64')
-    
+    X_train_a = np.loadtxt('/ap_data/01_a_train_data.txt')
+    y_train_a = np.loadtxt('/ap_data/01_a_train_label.txt', dtype='int64')
+
+    X_test_a = np.loadtxt('/ap_data/01_a_test_data.txt')
+    y_test_a = np.loadtxt('/ap_data/01_a_test_label.txt', dtype='int64')
+
+    X_train_c = np.loadtxt('/ap_data/01_c_train_data.txt')
+    y_train_c = np.loadtxt('/ap_data/01_c_train_label.txt', dtype='int64')
+
+    X_test_c = np.loadtxt('/ap_data/01_c_test_data.txt')
+    y_test_c = np.loadtxt('/ap_data/01_c_test_label.txt', dtype='int64')
+
     X_train = np.concatenate([X_train_a, X_train_c])
     y_train = np.concatenate([y_train_a, y_train_c])
-    
+
 #     X_test = np.concatenate([X_test_a, X_test_c])
 #     y_test = np.concatenate([y_test_a, y_test_c])
-    
-   
+
+
     dtrain = xgb.DMatrix(X_train, label=y_train)
     dtest = xgb.DMatrix(X_test, label=y_test)
-    
+
     fin_xgboost = XGBClassifier(
     #random_state=42,
     #n_estimators= 30,
     eta = 0.3,
-    max_depth= 15, 
-    min_child_weight=6, 
-    subsample=0.9, 
+    max_depth= 15,
+    min_child_weight=6,
+    subsample=0.9,
     colsample_bytree=0.7,
     seed=0,
     eval_metric='mlogloss'
     )
- 
+
     # モデル訓練
     fin_xgboost.fit(X_train, y_train,verbose=True)
 
@@ -67,10 +67,10 @@ def main():
 
     # 混同行列で確認
     confusion_matrix(y_test, fin_test_pred, labels=[1, 0])
-    
+
     print(accuracy_score(y_test, fin_test_pred))
     print(classification_report(y_test, fin_test_pred))
-    
+
     print(confusion_matrix(y_test,  fin_test_pred))
 
 
@@ -138,6 +138,3 @@ if __name__ == '__main__':
 # 0.9660958904109589
 
 # !pip install pandas
-
-
-

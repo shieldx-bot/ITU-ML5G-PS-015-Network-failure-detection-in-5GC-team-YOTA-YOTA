@@ -8,62 +8,55 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 
 
+
 def main():
-    # ===== LOAD TOÀN BỘ DỮ LIỆU =====
-    print("Loading data...")
+#     ####データの合成なし
+#     X_train = np.loadtxt('/ap_data/01_c_train_data.txt')
+#     y_train = np.loadtxt('/ap_data/01_c_train_label.txt', dtype='int64')
 
-    # helper to try several candidate data directories (relative to this script)
-    base = os.path.dirname(os.path.abspath(__file__))
-    candidate_dirs = [
-        os.path.join(base, '..', 'ap_data'),
-        os.path.join(base, 'ap_data'),
-        os.path.join(base, '..', '..', 'ap_data'),
-        os.path.join(os.getcwd(), 'ap_data'),
-    ]
+    X_test = np.loadtxt('../ap_data/01_a_test_data.txt')
+    y_test = np.loadtxt('../ap_data/01_a_test_label.txt', dtype='int64')
 
-    def find_file(name):
-        for d in candidate_dirs:
-            p = os.path.abspath(os.path.join(d, name))
-            if os.path.exists(p):
-                return p
-        raise FileNotFoundError(f"Could not find {name} in candidate dirs: {candidate_dirs}")
+    #データの合成あり
+    X_train_a = np.loadtxt('../ap_data/01_a_train_data.txt')
+    y_train_a = np.loadtxt('../ap_data/01_a_train_label.txt', dtype='int64')
 
-    X_train_a = np.loadtxt(find_file('01_a_train_data.txt'))
-    y_train_a = np.loadtxt(find_file('01_a_train_label.txt'), dtype='int64')
+    X_test_a = np.loadtxt('../ap_data/01_a_test_data.txt')
+    y_test_a = np.loadtxt('../ap_data/01_a_test_label.txt', dtype='int64')
 
-    X_train_c = np.loadtxt(find_file('01_c_train_data.txt'))
-    y_train_c = np.loadtxt(find_file('01_c_train_label.txt'), dtype='int64')
+    X_train_c = np.loadtxt('../ap_data/01_c_train_data.txt')
+    y_train_c = np.loadtxt('../ap_data/01_c_train_label.txt', dtype='int64')
 
-    X_test = np.loadtxt(find_file('01_a_test_data.txt'))
-    y_test = np.loadtxt(find_file('01_a_test_label.txt'), dtype='int64')
+    X_test_c = np.loadtxt('../ap_data/01_c_test_data.txt')
+    y_test_c = np.loadtxt('../ap_data/01_c_test_label.txt', dtype='int64')
 
     X_train = np.concatenate([X_train_a, X_train_c])
     y_train = np.concatenate([y_train_a, y_train_c])
-    print(f"Training samples: {len(y_train)}")
-    print(f"Test samples: {len(y_test)}")
+
+#     X_test = np.concatenate([X_test_a, X_test_c])
+#     y_test = np.concatenate([y_test_a, y_test_c])
 
 
-    # Use numpy arrays with scikit-learn (no torch required)
-    X_train_used = X_train.astype(np.float32)
-    y_train_used = y_train.ravel()  # ensure 1-D labels
-    X_test_used = X_test.astype(np.float32)
-    y_test_used = y_test.ravel()
-    repr = svm.SVC()
-    repr.fit(X_train_used, y_train_used)
-    pred_y = repr.predict(X_test_used[:100])
-    print("pred_y =v", pred_y )
-    print("------------------")
-    print("test_y", y_test_used[:100] )
-    mae = np.mean(np.abs(pred_y - y_test_used[:100]))
-    print("mae = ", mae)
+    dtrain = xgb.DMatrix(X_train, label=y_train)
+    dtest = xgb.DMatrix(X_test, label=y_test)
+
+    fin_xgboost = svm.SVC()
 
 
-    print(confusion_matrix(y_test_used[:100], pred_y))
+    # モデル訓練
+    fin_xgboost.fit(X_train, y_train,verbose=True)
+
+    # テストデータで推測値を算出
+    fin_test_pred = fin_xgboost.predict(X_test)
+
+    # 混同行列で確認
+    confusion_matrix(y_test, fin_test_pred, labels=[1, 0])
+
+    print(accuracy_score(y_test, fin_test_pred))
+    print(classification_report(y_test, fin_test_pred))
+
+    print(confusion_matrix(y_test,  fin_test_pred))
 
 
-
-
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

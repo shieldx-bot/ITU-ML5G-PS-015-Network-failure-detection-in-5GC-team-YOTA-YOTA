@@ -1,11 +1,16 @@
 import os
 import numpy as np
 from xgboost import XGBClassifier
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
 
 
 
 
-def main(): 
+
+def main():
     # ===== LOAD TOÀN BỘ DỮ LIỆU =====
     print("Loading data...")
 
@@ -33,13 +38,13 @@ def main():
 
     X_test = np.loadtxt(find_file('01_a_test_data.txt'))
     y_test = np.loadtxt(find_file('01_a_test_label.txt'), dtype='int64')
-    
+
     X_train = np.concatenate([X_train_a, X_train_c])
     y_train = np.concatenate([y_train_a, y_train_c])
     print(f"Training samples: {len(y_train)}")
     print(f"Test samples: {len(y_test)}")
 
-  
+
     # Use numpy arrays with scikit-learn (no torch required)
     X_train_used = X_train.astype(np.float32)
     y_train_used = y_train.ravel()  # ensure 1-D labels
@@ -53,5 +58,5 @@ def main():
     mae = np.mean(np.abs(pred_y - y_test_used[:10]))
     print("mae = ", mae)
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
     main()
