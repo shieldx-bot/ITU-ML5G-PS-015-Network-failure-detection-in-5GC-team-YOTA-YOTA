@@ -45,7 +45,7 @@ def main():
 
 
     # モデル訓練
-    fin_xgboost.fit(X_train, y_train,verbose=True)
+    fin_xgboost.fit(X_train, y_train)
 
     # テストデータで推測値を算出
     fin_test_pred = fin_xgboost.predict(X_test)
