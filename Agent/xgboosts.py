@@ -74,6 +74,7 @@ def main():
     print(accuracy_score(y_test_used, pred_y))
     print(classification_report(y_test_used, pred_y))
     print(confusion_matrix(y_test_used,  pred_y))
+    
     acc = accuracy_score(y_test_used, pred_y)
 
     report = classification_report(y_test_used, pred_y)

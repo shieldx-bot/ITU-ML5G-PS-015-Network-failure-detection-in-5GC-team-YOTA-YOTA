@@ -1,12 +1,12 @@
 from sklearn import svm
 import os
 import numpy as np
-from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
-import time 
+import time
+from sklearn.svm import LinearSVC
 
 
 def main():
@@ -37,21 +37,23 @@ def main():
 #     y_test = np.concatenate([y_test_a, y_test_c])
 
 
-    fin_xgboost = svm.SVC()
-
+    fin_xgboost = LinearSVC(
+        class_weight='balanced',
+        max_iter=5000
+    )
     print("Length X_train:", len(X_train));
     print("Length X_test:", len(X_test));
 
     # モデル訓練
     start_train = time.time();
     fin_xgboost.fit(X_train, y_train)
-    time_train = time.time() - start_train; 
+    time_train = time.time() - start_train;
 
     # テストデータで推測値を算出
 
-    start_pred = time.time(); 
+    start_pred = time.time();
     fin_test_pred = fin_xgboost.predict(X_test)
-    time_pred = time.time() - start_pred; 
+    time_pred = time.time() - start_pred;
 
 
     # 混同行列で確認
