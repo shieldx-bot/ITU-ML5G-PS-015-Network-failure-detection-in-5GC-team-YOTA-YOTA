@@ -10,40 +10,98 @@ from sklearn.svm import LinearSVC
 
 
 def main():
-#     ####データの合成なし
-#     X_train = np.loadtxt('/ap_data/01_c_train_data.txt')
-#     y_train = np.loadtxt('/ap_data/01_c_train_label.txt', dtype='int64')
 
-    X_test = np.loadtxt('../ap_data/01_a_test_data.txt')
-    y_test = np.loadtxt('../ap_data/01_a_test_label.txt', dtype='int64')
+    # =========================
+    # LOAD TRAIN DATA
+    # =========================
 
-    #データの合成あり
+    # Dataset A
     X_train_a = np.loadtxt('../ap_data/01_a_train_data.txt')
-    y_train_a = np.loadtxt('../ap_data/01_a_train_label.txt', dtype='int64')
+    y_train_a = np.loadtxt(
+        '../ap_data/01_a_train_label.txt',
+        dtype='int64'
+    )
 
-    X_test_a = np.loadtxt('../ap_data/01_a_test_data.txt')
-    y_test_a = np.loadtxt('../ap_data/01_a_test_label.txt', dtype='int64')
+    # Dataset B
+    X_train_b = np.loadtxt('../ap_data/02_b_train_data.txt')
+    y_train_b = np.loadtxt(
+        '../ap_data/02_b_train_label.txt',
+        dtype='int64'
+    )
 
+    # Dataset C
     X_train_c = np.loadtxt('../ap_data/01_c_train_data.txt')
-    y_train_c = np.loadtxt('../ap_data/01_c_train_label.txt', dtype='int64')
+    y_train_c = np.loadtxt(
+        '../ap_data/01_c_train_label.txt',
+        dtype='int64'
+    )
 
+    # Merge train datasets
+    X_train = np.concatenate([
+        X_train_a,
+        X_train_b,
+        X_train_c
+    ])
+
+    y_train = np.concatenate([
+        y_train_a,
+        y_train_b,
+        y_train_c
+    ])
+
+    # =========================
+    # LOAD TEST DATA
+    # =========================
+
+    # Dataset A
+    X_test_a = np.loadtxt('../ap_data/01_a_test_data.txt')
+    y_test_a = np.loadtxt(
+        '../ap_data/01_a_test_label.txt',
+        dtype='int64'
+    )
+
+    # Dataset B
+    X_test_b = np.loadtxt('../ap_data/02_b_test_data.txt')
+    y_test_b = np.loadtxt(
+        '../ap_data/02_b_test_label.txt',
+        dtype='int64'
+    )
+
+    # Dataset C
     X_test_c = np.loadtxt('../ap_data/01_c_test_data.txt')
-    y_test_c = np.loadtxt('../ap_data/01_c_test_label.txt', dtype='int64')
+    y_test_c = np.loadtxt(
+        '../ap_data/01_c_test_label.txt',
+        dtype='int64'
+    )
 
-    X_train = np.concatenate([X_train_a, X_train_c])
-    y_train = np.concatenate([y_train_a, y_train_c])
+    # Merge test datasets
+    X_test = np.concatenate([
+        X_test_a,
+        X_test_b,
+        X_test_c
+    ])
 
-#     X_test = np.concatenate([X_test_a, X_test_c])
-#     y_test = np.concatenate([y_test_a, y_test_c])
-
+    y_test = np.concatenate([
+        y_test_a,
+        y_test_b,
+        y_test_c
+    ])
 
     fin_xgboost = LinearSVC(
         class_weight='balanced',
         max_iter=5000
     )
+
+    print("Length class 0:", len(y_train[y_train == 0]))
+    print("Length class 1:", len(y_train[y_train == 1]))
+    print("Length class 2:", len(y_train[y_train == 2]))
+    print("Length class 3:", len(y_train[y_train == 3]))
+    print("Length class 4:", len(y_train[y_train == 4]))
+    print("Length class 5:", len(y_train[y_train == 5]))
+
     print("Length X_train:", len(X_train));
     print("Length X_test:", len(X_test));
-
+    
     # モデル訓練
     start_train = time.time();
     fin_xgboost.fit(X_train, y_train)
