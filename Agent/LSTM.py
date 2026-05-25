@@ -40,19 +40,81 @@ class LSTMModel(nn.Module):
 def main():
     # ===== LOAD TOÀN BỘ DỮ LIỆU =====
     print("Loading data...")
-    X_train_a = np.loadtxt('01_a_train_data.txt')
-    y_train_a = np.loadtxt('01_a_train_label.txt', dtype='int64')
+    # =========================
+    # LOAD TRAIN DATA
+    # =========================
 
-    X_train_c = np.loadtxt('01_c_train_data.txt')
-    y_train_c = np.loadtxt('01_c_train_label.txt', dtype='int64')
+    # Dataset A
+    X_train_a = np.loadtxt('../ap_data/01_a_train_data.txt')
+    y_train_a = np.loadtxt(
+        '../ap_data/01_a_train_label.txt',
+        dtype='int64'
+    )
 
-    X_test = np.loadtxt('01_a_test_data.txt')
-    y_test = np.loadtxt('01_a_test_label.txt', dtype='int64')
+    # Dataset B
+    X_train_b = np.loadtxt('../ap_data/02_b_train_data.txt')
+    y_train_b = np.loadtxt(
+        '../ap_data/02_b_train_label.txt',
+        dtype='int64'
+    )
 
-    X_train = np.concatenate([X_train_a, X_train_c])
-    y_train = np.concatenate([y_train_a, y_train_c])
-    print(f"Training samples: {len(y_train)}")
-    print(f"Test samples: {len(y_test)}")
+    # Dataset C
+    X_train_c = np.loadtxt('../ap_data/01_c_train_data.txt')
+    y_train_c = np.loadtxt(
+        '../ap_data/01_c_train_label.txt',
+        dtype='int64'
+    )
+
+    # Merge train datasets
+    X_train = np.concatenate([
+        X_train_a,
+        X_train_b,
+        X_train_c
+    ])
+
+    y_train = np.concatenate([
+        y_train_a,
+        y_train_b,
+        y_train_c
+    ])
+
+    # =========================
+    # LOAD TEST DATA
+    # =========================
+
+    # Dataset A
+    X_test_a = np.loadtxt('../ap_data/01_a_test_data.txt')
+    y_test_a = np.loadtxt(
+        '../ap_data/01_a_test_label.txt',
+        dtype='int64'
+    )
+
+    # Dataset B
+    X_test_b = np.loadtxt('../ap_data/02_b_test_data.txt')
+    y_test_b = np.loadtxt(
+        '../ap_data/02_b_test_label.txt',
+        dtype='int64'
+    )
+
+    # Dataset C
+    X_test_c = np.loadtxt('../ap_data/01_c_test_data.txt')
+    y_test_c = np.loadtxt(
+        '../ap_data/01_c_test_label.txt',
+        dtype='int64'
+    )
+
+    # Merge test datasets
+    X_test = np.concatenate([
+        X_test_a,
+        X_test_b,
+        X_test_c
+    ])
+
+    y_test = np.concatenate([
+        y_test_a,
+        y_test_b,
+        y_test_c
+    ])
 
     # ===== TẠO DATALOADER (KHÔNG GIỚI HẠN) =====
     BATCH_SIZE = 512  # Điều chỉnh: 128 nếu vẫn OOM, 512 nếu muốn nhanh
