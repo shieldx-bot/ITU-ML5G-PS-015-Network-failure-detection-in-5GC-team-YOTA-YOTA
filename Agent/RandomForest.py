@@ -94,11 +94,11 @@ def main():
     start = time.time()
 
     fin_xgboost = RandomForestClassifier(    
-        n_estimators=200,
-        max_depth=None,
-        class_weight='balanced',
-        random_state=0,
-        n_jobs=-1)
+    n_estimators=500,
+    class_weight='balanced',
+    random_state=42,
+    n_jobs=-1
+        )
 
 
     # モデル訓練
