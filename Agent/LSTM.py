@@ -183,7 +183,7 @@ def main():
             all_targets.append(batch_y.cpu().numpy())
 
     start_test = time.time()
-    predicted_np = np.concatenate(all_predictions).flatten()
+    predicted_np = np.concatenate(all_predictions).flatten().astype(int)
     predict_time = time.time() - start_test 
     y_test_np = np.concatenate(all_targets).flatten()
 
