@@ -12,32 +12,83 @@ import time
 
 
 def main():
-#     ####データの合成なし
-#     X_train = np.loadtxt('/ap_data/01_c_train_data.txt')
-#     y_train = np.loadtxt('/ap_data/01_c_train_label.txt', dtype='int64')
+ # ===== LOAD TOÀN BỘ DỮ LIỆU =====
+    print("Loading data...")
+    # =========================
+    # LOAD TRAIN DATA
+    # =========================
 
-    X_test = np.loadtxt('../ap_data/01_a_test_data.txt')
-    y_test = np.loadtxt('../ap_data/01_a_test_label.txt', dtype='int64')
+    # Dataset A
+    X_train_a = np.loadtxt('/kaggle/input/datasets/nguyenvananhxa/data-faults/01_a_train_data.txt')
+    y_train_a = np.loadtxt(
+        '/kaggle/input/datasets/nguyenvananhxa/data-faults/01_a_train_label.txt',
+        dtype='int64'
+    )
 
-    #データの合成あり
-    X_train_a = np.loadtxt('../ap_data/01_a_train_data.txt')
-    y_train_a = np.loadtxt('../ap_data/01_a_train_label.txt', dtype='int64')
+    # Dataset B
+    X_train_b = np.loadtxt('/kaggle/input/datasets/nguyenvananhxa/data-faults/02_b_train_data.txt')
+    y_train_b = np.loadtxt(
+        '/kaggle/input/datasets/nguyenvananhxa/data-faults/02_b_train_label.txt',
+        dtype='int64'
+    )
 
-    X_test_a = np.loadtxt('../ap_data/01_a_test_data.txt')
-    y_test_a = np.loadtxt('../ap_data/01_a_test_label.txt', dtype='int64')
+    # Dataset C
+    X_train_c = np.loadtxt('/kaggle/input/datasets/nguyenvananhxa/data-faults/01_c_train_data.txt')
+    y_train_c = np.loadtxt(
+        '/kaggle/input/datasets/nguyenvananhxa/data-faults/01_c_train_label.txt',
+        dtype='int64'
+    )
 
-    X_train_c = np.loadtxt('../ap_data/01_c_train_data.txt')
-    y_train_c = np.loadtxt('../ap_data/01_c_train_label.txt', dtype='int64')
+    # Merge train datasets
+    X_train = np.concatenate([
+        X_train_a,
+        X_train_b,
+        X_train_c
+    ])
 
-    X_test_c = np.loadtxt('../ap_data/01_c_test_data.txt')
-    y_test_c = np.loadtxt('../ap_data/01_c_test_label.txt', dtype='int64')
+    y_train = np.concatenate([
+        y_train_a,
+        y_train_b,
+        y_train_c
+    ])
 
-    X_train = np.concatenate([X_train_a, X_train_c])
-    y_train = np.concatenate([y_train_a, y_train_c])
+    # =========================
+    # LOAD TEST DATA
+    # =========================
 
-#     X_test = np.concatenate([X_test_a, X_test_c])
-#     y_test = np.concatenate([y_test_a, y_test_c])
+    # Dataset A
+    X_test_a = np.loadtxt('/kaggle/input/datasets/nguyenvananhxa/data-faults/01_a_test_data.txt')
+    y_test_a = np.loadtxt(
+        '/kaggle/input/datasets/nguyenvananhxa/data-faults/01_a_test_label.txt',
+        dtype='int64'
+    )
 
+    # Dataset B
+    X_test_b = np.loadtxt('/kaggle/input/datasets/nguyenvananhxa/data-faults/02_b_test_data.txt')
+    y_test_b = np.loadtxt(
+        '/kaggle/input/datasets/nguyenvananhxa/data-faults/02_b_test_label.txt',
+        dtype='int64'
+    )
+
+    # Dataset C
+    X_test_c = np.loadtxt('/kaggle/input/datasets/nguyenvananhxa/data-faults/01_c_test_data.txt')
+    y_test_c = np.loadtxt(
+        '/kaggle/input/datasets/nguyenvananhxa/data-faults/01_c_test_label.txt',
+        dtype='int64'
+    )
+
+    # Merge test datasets
+    X_test = np.concatenate([
+        X_test_a,
+        X_test_b,
+        X_test_c
+    ])
+
+    y_test = np.concatenate([
+        y_test_a,
+        y_test_b,
+        y_test_c
+    ])
 
 
     fin_xgboost = KNeighborsClassifier(n_neighbors=3)
